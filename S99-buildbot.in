@@ -1,0 +1,65 @@
+#!/bin/sh
+
+project=`basename ${0} | cut -f2 -d.`
+
+if [ "${project}" = "S99-buildbot" ]
+then
+    echo "this script should not be called directly, you should make a link"
+    echo "to this script with slave name as extension"
+    exit 0
+fi
+
+SLAVE_PATH="/var/lib/buildbot-${project}"
+USER=buildbot
+GROUP=buildbot
+export PATH="${PATH}:/usr/native-toolchain/bin"
+export LD_LIBRARY_PATH="/usr/native-toolchain/${TARGET}/lib"
+
+start()
+{
+    echo -n "Starting buildbot-${project} slave... "
+    /usr/bin/twistd --no_save --uid=${USER} --gid=${GROUP} \
+        --pidfile=/var/run/buildbot-${project}.pid \
+        --python=${SLAVE_PATH}/buildbot.tac
+
+    if [ $? -ne 0 ]
+    then
+        echo "[error]"
+        exit 1
+    fi
+
+    echo "[ok]"
+}
+
+stop()
+{
+    echo -n "Stopping buildbot slave... "
+    kill -15 `cat /var/run/buildbot-${project}.pid`
+
+    if [ $? -ne 0 ]
+    then
+        echo "[error]"
+        exit 1
+    fi
+
+    echo "[ok]"
+}
+
+case "${1}" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac

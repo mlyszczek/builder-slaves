@@ -1,0 +1,11 @@
+Package: buildbot-slaves-${TARGET}
+Version: ${VERSION}
+Description: buildbot workers
+Section: extras
+Priority: optional
+Maintainer: Michał Łyszczek
+License: bsd
+Architecture: all
+Homepage: kurwinet.pl
+Depends:
+Source:  N/A
