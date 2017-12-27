@@ -37,12 +37,22 @@ do
     done
 done
 
+
 for a in ${all_archs}
 do
     mkdir -p tmp/${a}/CONTROL
     cp control.template tmp/${a}/CONTROL/control
     cp S99-buildbot.in tmp/${a}/etc/init.d/S99-buildbot
     chmod 755 tmp/${a}/etc/init.d/S99-buildbot
+    echo "#!/bin/sh" > tmp/${a}/CONTROL/postinst
+    chmod 755 tmp/${a}/CONTROL/postinst
+
+    cd tmp/${a}/var/lib
+    for d in `ls -1`
+    do
+        echo "chown buildbot:buildbot -R /var/lib/${d}" >> ../../CONTROL/postinst
+    done
+    cd -
 
     sed -i "s/\${TARGET}/${a}/" tmp/${a}/etc/init.d/S99-buildbot
     sed -i "s/\${TARGET}/${a}/" tmp/${a}/CONTROL/control
