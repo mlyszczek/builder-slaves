@@ -2,7 +2,8 @@
 
 version="0.0.2"
 
-all_archs="armv5te926-builder-linux-gnueabihf
+all_archs="aarch64-builder-linux-gnu
+armv5te926-builder-linux-gnueabihf
 armv6j1136-builder-linux-gnueabihf
 armv7a15-builder-linux-gnueabihf
 armv7a9-builder-linux-gnueabihf
