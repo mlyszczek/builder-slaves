@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="0.0.1"
+version="0.0.2"
 
 all_archs="armv5te926-builder-linux-gnueabihf
 armv6j1136-builder-linux-gnueabihf

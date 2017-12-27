@@ -1,0 +1,4 @@
+buildmaster_port=4004
+password="buildbot"
+buildmaster_host="kurwik"
+arch="all"
