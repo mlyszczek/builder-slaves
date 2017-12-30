@@ -2,7 +2,9 @@
 
 version="0.0.2"
 
-all_archs="x86_64-builder-linux-gnu
+all_archs="x86_64-builder-linux-uclibc
+i686-builder-linux-uclibc
+x86_64-builder-linux-gnu
 mips-builder-linux-gnu
 nios2-builder-linux-gnu
 aarch64-builder-linux-gnu
