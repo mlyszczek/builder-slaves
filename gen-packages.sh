@@ -2,7 +2,8 @@
 
 version="0.0.2"
 
-all_archs="mips-builder-linux-gnu
+all_archs="x86_64-builder-linux-gnu
+mips-builder-linux-gnu
 nios2-builder-linux-gnu
 aarch64-builder-linux-gnu
 armv5te926-builder-linux-gnueabihf
@@ -58,8 +59,12 @@ do
     cd -
 
     sed -i "s/\${TARGET}/${a}/" tmp/${a}/etc/init.d/S99-buildbot
-    sed -i "s/\${TARGET}/${a}/" tmp/${a}/CONTROL/control
     sed -i "s/\${VERSION}/${version}/" tmp/${a}/CONTROL/control
+    ###
+    # opkg doesn't support _ in pacakge names, change it to -
+    #
+    target=`echo ${a} | sed 's/_/-/'`
+    sed -i "s/\${TARGET}/${target}/" tmp/${a}/CONTROL/control
 
     opkg-build -O -o root -g root tmp/${a} .
 done
