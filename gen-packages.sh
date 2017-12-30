@@ -2,7 +2,9 @@
 
 version="0.0.2"
 
-all_archs="aarch64-builder-linux-gnu
+all_archs="mips-builder-linux-gnu
+nios2-builder-linux-gnu
+aarch64-builder-linux-gnu
 armv5te926-builder-linux-gnueabihf
 armv6j1136-builder-linux-gnueabihf
 armv7a15-builder-linux-gnueabihf
