@@ -12,7 +12,7 @@ fi
 SLAVE_PATH="/var/lib/buildbot-${project}"
 USER=buildbot
 GROUP=buildbot
-export PATH="${PATH}:/usr/native-toolchain/bin"
+export PATH="${PATH}:/usr/local/bin/:/usr/native-toolchain/bin"
 export LD_LIBRARY_PATH="/usr/native-toolchain/${TARGET}/lib"
 
 start()

@@ -1,18 +1,22 @@
 #!/bin/sh
 
-version="0.0.2"
+version="0.0.3"
 
-all_archs="x86_64-builder-linux-uclibc
-i686-builder-linux-uclibc
-x86_64-builder-linux-gnu
-mips-builder-linux-gnu
-nios2-builder-linux-gnu
-aarch64-builder-linux-gnu
-armv5te926-builder-linux-gnueabihf
-armv6j1136-builder-linux-gnueabihf
-armv7a15-builder-linux-gnueabihf
-armv7a9-builder-linux-gnueabihf
-i686-builder-linux-gnu"
+all_archs="
+    i686-builder-freebsd
+    x86_64-builder-linux-musl
+    i686-builder-linux-musl
+    x86_64-builder-linux-uclibc
+    i686-builder-linux-uclibc
+    x86_64-builder-linux-gnu
+    mips-builder-linux-gnu
+    nios2-builder-linux-gnu
+    aarch64-builder-linux-gnu
+    armv5te926-builder-linux-gnueabihf
+    armv6j1136-builder-linux-gnueabihf
+    armv7a15-builder-linux-gnueabihf
+    armv7a9-builder-linux-gnueabihf
+    i686-builder-linux-gnu"
 
 rm -rf tmp
 
@@ -56,7 +60,7 @@ do
     cd tmp/${a}/var/lib
     for d in `ls -1`
     do
-        echo "chown buildbot:buildbot -R /var/lib/${d}" >> ../../CONTROL/postinst
+        echo "chown -R buildbot:buildbot /var/lib/${d}" >> ../../CONTROL/postinst
     done
     cd -
 
