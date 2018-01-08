@@ -3,6 +3,7 @@
 version="0.0.3"
 
 all_archs="
+    i686-builder-openbsd
     i686-builder-freebsd
     x86_64-builder-linux-musl
     i686-builder-linux-musl
