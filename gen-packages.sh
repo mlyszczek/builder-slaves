@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="0.0.3"
+version="0.0.4"
 
 all_archs="
     i686-builder-openbsd

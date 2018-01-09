@@ -1,5 +1,8 @@
 #!/bin/sh
 
+unalias stop
+unalias start
+
 project=`basename ${0} | cut -f2 -d.`
 
 if [ "${project}" = "S99-buildbot" ]
