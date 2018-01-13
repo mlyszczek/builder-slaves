@@ -3,6 +3,8 @@
 version="0.0.4"
 
 all_archs="
+    x86_64-builder-solaris
+    i686-builder-netbsd
     i686-builder-openbsd
     i686-builder-freebsd
     x86_64-builder-linux-musl
