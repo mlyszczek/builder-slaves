@@ -1,6 +1,10 @@
 #!/bin/sh
 
-version="0.0.4"
+version="0.0.6"
+
+all_hosts="
+    kurwik
+    kurwidev"
 
 all_archs="
     x86_64-builder-solaris
@@ -33,47 +37,59 @@ do
         arch="${all_archs}"
     fi
 
-    for a in ${arch}
+    for h in ${all_hosts}
     do
-        mkdir -p tmp/${a}/var/lib/buildbot-${name}
-        mkdir -p tmp/${a}/etc/init.d
-        ln -fs /etc/init.d/S99-buildbot tmp/${a}/etc/init.d/S99-buildbot.${name}
-        cd tmp/${a}/var/lib/buildbot-${name}
-        cp ../../../../../buildbot-slave.tac.template buildbot.tac
+        for a in ${arch}
+        do
+            a="$(echo ${a} | sed "s/builder/${h}/")"
+            echo "generating buildbot.tac for ${a}"
 
-        sed -i "s/\${BUILDMASTER_PORT}/${buildmaster_port}/" buildbot.tac
-        sed -i "s/\${WORKER_NAME}/${a}/" buildbot.tac
-        sed -i "s/\${PASSWORD}/${password}/" buildbot.tac
-        sed -i "s/\${BUILDMASTER_HOST}/${buildmaster_host}/" buildbot.tac
+            mkdir -p tmp/${a}/var/lib/buildbot-${name}
+            mkdir -p tmp/${a}/etc/init.d
+            ln -fs /etc/init.d/S99-buildbot tmp/${a}/etc/init.d/S99-buildbot.${name}
+            cd tmp/${a}/var/lib/buildbot-${name}
+            cp ../../../../../buildbot-slave.tac.template buildbot.tac
 
-        cd -
+            sed -i "s/\${BUILDMASTER_PORT}/${buildmaster_port}/" buildbot.tac
+            sed -i "s/\${WORKER_NAME}/${a}/" buildbot.tac
+            sed -i "s/\${PASSWORD}/${password}/" buildbot.tac
+            sed -i "s/\${BUILDMASTER_HOST}/${buildmaster_host}/" buildbot.tac
+
+            cd - > /dev/null
+        done
     done
 done
 
 
-for a in ${all_archs}
+for h in ${all_hosts}
 do
-    mkdir -p tmp/${a}/CONTROL
-    cp control.template tmp/${a}/CONTROL/control
-    cp S99-buildbot.in tmp/${a}/etc/init.d/S99-buildbot
-    chmod 755 tmp/${a}/etc/init.d/S99-buildbot
-    echo "#!/bin/sh" > tmp/${a}/CONTROL/postinst
-    chmod 755 tmp/${a}/CONTROL/postinst
-
-    cd tmp/${a}/var/lib
-    for d in `ls -1`
+    for a in ${all_archs}
     do
-        echo "chown -R buildbot:buildbot /var/lib/${d}" >> ../../CONTROL/postinst
+        a="$(echo ${a} | sed "s/builder/${h}/")"
+        echo "generating opkg for ${a}"
+
+        mkdir -p tmp/${a}/CONTROL
+        cp control.template tmp/${a}/CONTROL/control
+        cp S99-buildbot.in tmp/${a}/etc/init.d/S99-buildbot
+        chmod 755 tmp/${a}/etc/init.d/S99-buildbot
+        echo "#!/bin/sh" > tmp/${a}/CONTROL/postinst
+        chmod 755 tmp/${a}/CONTROL/postinst
+
+        cd tmp/${a}/var/lib
+        for d in `ls -1`
+        do
+            echo "chown -R buildbot:buildbot /var/lib/${d}" >> ../../CONTROL/postinst
+        done
+        cd - > /dev/null
+
+        sed -i "s/\${TARGET}/${a}/" tmp/${a}/etc/init.d/S99-buildbot
+        sed -i "s/\${VERSION}/${version}/" tmp/${a}/CONTROL/control
+        ###
+        # opkg doesn't support _ in pacakge names, change it to -
+        #
+        target=`echo ${a} | sed 's/_/-/'`
+        sed -i "s/\${TARGET}/${target}/" tmp/${a}/CONTROL/control
+
+        opkg-build -O -o root -g root tmp/${a} .
     done
-    cd -
-
-    sed -i "s/\${TARGET}/${a}/" tmp/${a}/etc/init.d/S99-buildbot
-    sed -i "s/\${VERSION}/${version}/" tmp/${a}/CONTROL/control
-    ###
-    # opkg doesn't support _ in pacakge names, change it to -
-    #
-    target=`echo ${a} | sed 's/_/-/'`
-    sed -i "s/\${TARGET}/${target}/" tmp/${a}/CONTROL/control
-
-    opkg-build -O -o root -g root tmp/${a} .
 done
