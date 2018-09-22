@@ -1,3 +1,5 @@
 #!/bin/sh
 
-scp *.opk root@kurwik:/var/www/kurwinet.pl/opkg
+cp *.opk /var/www/kurwinet.pl/opkg
+cd /var/www/kurwinet.pl/opkg
+./update.sh

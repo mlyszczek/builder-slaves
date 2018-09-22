@@ -7,6 +7,8 @@ all_hosts="
     kurwidev"
 
 all_archs="
+    i686-builder-minix
+    x86_64-builder-dragonfly
     x86_64-builder-solaris
     i686-builder-netbsd
     i686-builder-openbsd
