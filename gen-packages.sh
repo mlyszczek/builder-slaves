@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version="0.0.6"
+version="0.0.8"
 
 all_hosts="
     kurwik
@@ -67,6 +67,7 @@ for h in ${all_hosts}
 do
     for a in ${all_archs}
     do
+        gcc="${a}"
         a="$(echo ${a} | sed "s/builder/${h}/")"
         echo "generating opkg for ${a}"
 
@@ -84,7 +85,7 @@ do
         done
         cd - > /dev/null
 
-        sed -i "s/\${TARGET}/${a}/" tmp/${a}/etc/init.d/S99-buildbot
+        sed -i "s/\${TARGET}/${gcc}/" tmp/${a}/etc/init.d/S99-buildbot
         sed -i "s/\${VERSION}/${version}/" tmp/${a}/CONTROL/control
         ###
         # opkg doesn't support _ in pacakge names, change it to -
