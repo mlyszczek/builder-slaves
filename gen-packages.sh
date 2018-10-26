@@ -25,7 +25,20 @@ all_archs="
     armv6j1136-builder-linux-gnueabihf
     armv7a15-builder-linux-gnueabihf
     armv7a9-builder-linux-gnueabihf
-    i686-builder-linux-gnu"
+    i686-builder-linux-gnu
+    x86_64-builder-debian9
+    x86_64-builder-debian8
+    x86_64-builder-ubuntu1804
+    x86_64-builder-ubuntu1604
+    x86_64-builder-centos7
+    x86_64-builder-fedora30
+    x86_64-builder-fedora29
+    x86_64-builder-mint19
+    x86_64-builder-mint18
+    x86_64-builder-opensuse15
+    x86_64-builder-rhel7
+    x86_64-builder-slackware142
+    x86_64-builder-slackware141"
 
 rm -rf tmp
 
