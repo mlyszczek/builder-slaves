@@ -1,7 +1,14 @@
 #!/bin/sh
 
-unalias stop
-unalias start
+if alias stop 2>/dev/null
+then
+    unalias stop
+fi
+
+if alias start 2>/dev/null
+then
+    unalias start
+fi
 
 project=`basename ${0} | cut -f2 -d.`
 
@@ -16,7 +23,7 @@ SLAVE_PATH="/var/lib/buildbot-${project}"
 USER=buildbot
 GROUP=buildbot
 export PATH="${PATH}:/usr/local/bin/:/usr/native-toolchain/bin:/opt/developerstudio12.5/bin:/usr/local/bin/"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/native-toolchain/${TARGET}/lib:/usr/local/lib:/opt/developerstudio12.5/lib"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/native-toolchain/${TARGET}/lib:/usr/local/lib:/usr/local/lib64:/opt/developerstudio12.5/lib"
 
 start()
 {
