@@ -33,6 +33,7 @@ all_archs="
     x86_64-builder-centos7
     x86_64-builder-fedora30
     x86_64-builder-fedora29
+    x86_64-builder-fedora28
     x86_64-builder-mint19
     x86_64-builder-mint18
     x86_64-builder-opensuse15
